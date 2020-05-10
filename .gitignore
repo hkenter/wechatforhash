@@ -1,5 +1,5 @@
 .idea
 node_modules
-bot-data-for-bau.memory-card.json
 resource/config.ini
 package-lock.json
+bot-data-for-hash.memory-card.json
