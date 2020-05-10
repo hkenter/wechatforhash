@@ -2,3 +2,4 @@
 node_modules
 bot-data-for-bau.memory-card.json
 resource/config.ini
+package-lock.json
