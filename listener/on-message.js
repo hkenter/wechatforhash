@@ -1,4 +1,5 @@
 let bot = require('./../demo');
+let RestUtil = require('./../util/rest-util');
 
 let busyIndicator    = false
 let busyAnnouncement = `Automatic Reply: I can't read your message because I'm offline now. I'll reply you when I come back.`
@@ -11,11 +12,10 @@ async function onMessage(msg) {
         && msg.type() !== bot.Message.Type.Emoticon
         && msg.type() !== bot.Message.Type.Image
         && msg.type() !== bot.Message.Type.Location
-        && msg.type() !== bot.Message.Type.Recalled
-        && msg.type() !== bot.Message.Type.MiniProgram) {
+        && msg.type() !== bot.Message.Type.Recalled) {
         return
     }
-    const content = msg.text();
+    let content = msg.text();
     const contact = msg.from();
     const receiver = msg.to();
     const room = msg.room();
@@ -66,7 +66,15 @@ async function onMessage(msg) {
             return
         }
         if (await msg.mentionSelf()) {
-            // to be continued
+            if (content.indexOf('btc') >= 0) {
+                // get btc price
+                let json_btc_price = await RestUtil.getResponseBTC();
+                // let json_btc_price = await JSON.stringify(await eval('(' + await str + ')'));
+                // await console.log(json_btc_price);
+                // json_btc_price = JSON.parse(json_btc_price);
+                // console.log(json_btc_price);
+                await msg.say(`BTC当前报价:\r\nUSD:${json_btc_price['BTC']['USD']}\r\nCNY${json_btc_price['BTC']['CNY']}`, contact);
+            }
             return
         }
         if (content === 'wechaty') {
