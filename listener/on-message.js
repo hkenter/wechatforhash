@@ -73,7 +73,7 @@ async function onMessage(msg) {
                 // await console.log(json_btc_price);
                 // json_btc_price = JSON.parse(json_btc_price);
                 // console.log(json_btc_price);
-                await msg.say(`BTC当前报价:\r\nUSD:${json_btc_price['BTC']['USD']}\r\nCNY${json_btc_price['BTC']['CNY']}`, contact);
+                await msg.say(`BTC当前报价:\r\nUSD:${json_btc_price['BTC']['USD']}\r\nCNY:${json_btc_price['BTC']['CNY']}`, contact);
             }
             return
         }
