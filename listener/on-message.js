@@ -66,14 +66,11 @@ async function onMessage(msg) {
             return
         }
         if (await msg.mentionSelf()) {
-            if (content.indexOf('btc') >= 0) {
+            if (content.indexOf('btc') >= 0 && content.indexOf('所有人') < 0) {
                 // get btc price
                 let json_btc_price = await RestUtil.getResponseBTC();
-                // let json_btc_price = await JSON.stringify(await eval('(' + await str + ')'));
-                // await console.log(json_btc_price);
-                // json_btc_price = JSON.parse(json_btc_price);
-                // console.log(json_btc_price);
                 await msg.say(`BTC当前报价:\r\nUSD:${json_btc_price['BTC']['USD']}\r\nCNY:${json_btc_price['BTC']['CNY']}`, contact);
+                return
             }
             return
         }
@@ -81,8 +78,39 @@ async function onMessage(msg) {
             say_someting = 'welcome to wechaty!';
             await contact.say(say_someting);
             return
-        } else if (content.indexOf('活动推送查询') >= 0) { // 活动推送查询 + event_id
-            console.log('活动查询event！');
+        }
+        if (content.indexOf('BTC合约交易机会出现') >= 0) {
+            let limit_position = null;
+            let stop_profit_position = null;
+            let stop_loss_position = null;
+            // get okex-btc-usd-swap index
+            let json_btc_usd_swap_index = await RestUtil.get_BTC_USD_SWAP_INDEX_OKEX();
+            console.log(`okex永续BTC指数：${json_btc_usd_swap_index['index']}`);
+            content = content.split('\n\n');
+            content.forEach(function (line) {
+                if (line.indexOf('挂单点位') >= 0) {
+                    limit_position = line.split('：')[1];
+                    if (limit_position.indexOf('到市价')) {
+                        limit_position = limit_position.slice(0, limit_position.indexOf('到'));
+                    }
+                }
+                if (line.indexOf('止盈点位') >= 0) {
+                    stop_profit_position = line.split('：')[1];
+                }
+                if (line.indexOf('止损点位') >= 0) {
+                    stop_loss_position = line.split('：')[1];
+                }
+            });
+            if (json_btc_usd_swap_index['index'] - limit_position >= 50) {
+                console.log('此单可做')
+            } else {
+                console.log('此单不可做')
+            }
+
+            console.log(`挂单点位：${limit_position}`);
+            console.log(`止盈点位：${stop_profit_position}`);
+            console.log(`止损点位：${stop_loss_position}`);
+            return
         }
         return
     }

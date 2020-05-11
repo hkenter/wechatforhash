@@ -1,4 +1,5 @@
 const axios = require('axios-https-proxy-fix');
+const CryptoJS = require("crypto-js");
 // const HttpProxyAgent = require('http-proxy-agent');
 let iniParser = require('iniparser');
 let config = iniParser.parseSync('./resource/config.ini');
@@ -13,6 +14,33 @@ async function getResponseBTC() {
             params: {
                 fsyms: 'BTC',
                 tsyms: 'USD,CNY'
+            }
+        })
+            .then(function (response) {
+                console.log(response.data);
+                resolve(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+                reject(error);
+            })
+            .then(function () {
+                // always executed
+            });
+    });
+}
+
+async function get_BTC_USD_SWAP_INDEX_OKEX() {
+    let url = config['OKEX']['api_url'] + config['OKEX']['get_index'];
+    let timestamp = new Date().getTime().toString();
+    return new Promise((resolve, reject) => {
+        axios.get(url, {
+            headers: {
+                'OK-ACCESS-KEY': config['OKEX']['OK-ACCESS-KEY'],
+                'OK-ACCESS-SIGN': CryptoJS.enc.Base64.stringify(
+                    CryptoJS.HmacSHA256(timestamp + 'GET' + config['OKEX']['get_index'], config['OKEX']['SECRET-KEY'])),
+                'OK-ACCESS-TIMESTAMP': timestamp,
+                'OK-ACCESS-PASSPHRASE': config['OKEX']['OK-ACCESS-PASSPHRASE']
             }
         })
             .then(function (response) {
@@ -53,5 +81,6 @@ async function getResponseDefault(url, param) {
 
 module.exports = {
     getResponseBTC,
+    get_BTC_USD_SWAP_INDEX_OKEX,
     getResponseDefault
 };
