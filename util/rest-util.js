@@ -13,10 +13,6 @@ async function getResponseBTC() {
             params: {
                 fsyms: 'BTC',
                 tsyms: 'USD,CNY'
-            },
-            proxy: {
-                host: ip,
-                port: port
             }
         })
             .then(function (response) {
@@ -38,10 +34,10 @@ async function getResponseDefault(url, param) {
         params: param,
         // httpAgent: new HttpProxyAgent("http://" + ip + ":" + port),
         // httpsAgent: new HttpProxyAgent("http://" + ip + ":" + port)
-        proxy: {
-            host: ip,
-            port: port
-        }
+        // proxy: {
+        //     host: ip,
+        //     port: port
+        // }
     })
         .then(function (response) {
             console.log(response.data);
