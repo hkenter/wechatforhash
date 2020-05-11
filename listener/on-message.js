@@ -11,7 +11,8 @@ async function onMessage(msg) {
         && msg.type() !== bot.Message.Type.Emoticon
         && msg.type() !== bot.Message.Type.Image
         && msg.type() !== bot.Message.Type.Location
-        && msg.type() !== bot.Message.Type.Recalled) {
+        && msg.type() !== bot.Message.Type.Recalled
+        && msg.type() !== bot.Message.Type.MiniProgram) {
         return
     }
     const content = msg.text();
@@ -62,10 +63,16 @@ async function onMessage(msg) {
                 me.say(say_someting);
             }
             console.log(`Message: ${recalledMessage} has been recalled.`)
+            return
+        }
+        if (await msg.mentionSelf()) {
+            // to be continued
+            return
         }
         if (content === 'wechaty') {
             say_someting = 'welcome to wechaty!';
-            await contact_for_say.say(say_someting);
+            await contact.say(say_someting);
+            return
         } else if (content.indexOf('活动推送查询') >= 0) { // 活动推送查询 + event_id
             console.log('活动查询event！');
         }
@@ -74,12 +81,12 @@ async function onMessage(msg) {
     if (await msg.mentionSelf()) {
         console.log('this message were mentioned me! [You were mentioned] tip ([有人@我]的提示)');
         const contactList = await msg.mentionList();
-        const contactIdList = contactList.map(c => c.id)
+        const contactIdList = contactList.map(c => c.id);
         if (contactIdList.includes(this.userSelf().id)) {
             await msg.say(busyAnnouncement, contact);
         }
     } else if(room === null) {
-        await msg.say(busyAnnouncement)
+        await msg.say(busyAnnouncement);
         return
     }
 
