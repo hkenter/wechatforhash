@@ -70,7 +70,7 @@ async function getResponseDefault(url, headers, param, proxy) {
     return new Promise((resolve, reject) => {
         axios.get(url, {
             params: param,
-            headers: headers,
+            headers: headers
             // httpAgent: new HttpProxyAgent("http://" + ip + ":" + port),
             // httpsAgent: new HttpProxyAgent("http://" + ip + ":" + port)
             // proxy: proxy
