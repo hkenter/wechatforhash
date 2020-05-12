@@ -102,9 +102,11 @@ async function onMessage(msg) {
                 }
             });
             if (json_btc_usd_swap_index['index'] - limit_position >= 50) {
-                console.log('此单可做')
+                console.log('此单可做');
+                let json_btc_usd_swap_position = await RestUtil.get_BTC_USD_SWAP_POSITION_OKEX();
+                console.log(json_btc_usd_swap_position);
             } else {
-                console.log('此单不可做')
+                console.log('此单不可做');
             }
 
             console.log(`挂单点位：${limit_position}`);

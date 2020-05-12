@@ -1,47 +1,79 @@
 const axios = require('axios-https-proxy-fix');
 const CryptoJS = require("crypto-js");
+const Crypto = require("crypto");
 // const HttpProxyAgent = require('http-proxy-agent');
 let iniParser = require('iniparser');
 let config = iniParser.parseSync('./resource/config.ini');
 
-let ip=config['PROXY']['ip'];
-let port=['PROXY']['port'];
+let proxy = {
+    host: config['PROXY']['ip'],
+    port: config['PROXY']['port']
+};
 axios.defaults.timeout = 10000; //超时取消请求
 
+async function getOkexHeadersToken(api_url) {
+    /*
+        {
+        "iso": "2015-01-07T23:47:25.201Z",
+        "epoch": 1420674445.201
+        }
+    * */
+    let timestamp = await get_TIMESTAMP_OKEX();
+    let what = timestamp['epoch'] + 'GET' + api_url;
+    let hmac = Crypto.createHmac('sha256', config['OKEX']['SECRET-KEY']);
+    let signature = hmac.update(what).digest('base64');
+    // signature = CryptoJS.enc.Base64.stringify(
+    //     CryptoJS.HmacSHA256(timestamp['epoch'] + 'GET' + api_url, config['OKEX']['SECRET-KEY']));
+
+    return {
+        'Content-Type': 'application/json; charset=utf-8',
+        'OK-ACCESS-KEY': config['OKEX']['OK-ACCESS-KEY'],
+        'OK-ACCESS-PASSPHRASE': config['OKEX']['OK-ACCESS-PASSPHRASE'],
+        'OK-ACCESS-SIGN': signature,
+        'OK-ACCESS-TIMESTAMP': timestamp['epoch']
+    };
+}
+
 async function getResponseBTC() {
-    return new Promise((resolve, reject) => {
-        axios.get("https://min-api.cryptocompare.com/data/pricemulti", {
-            params: {
-                fsyms: 'BTC',
-                tsyms: 'USD,CNY'
-            }
-        })
-            .then(function (response) {
-                console.log(response.data);
-                resolve(response.data);
-            })
-            .catch(function (error) {
-                console.log(error);
-                reject(error);
-            })
-            .then(function () {
-                // always executed
-            });
-    });
+    let url = "https://min-api.cryptocompare.com/data/pricemulti";
+    let params= {
+        fsyms: 'BTC',
+        tsyms: 'USD,CNY'
+    };
+    let headers = null;
+    return await getResponseDefault(url, headers, params, proxy);
+}
+
+async function get_TIMESTAMP_OKEX() {
+    let url = config['OKEX']['api_url'] + config['OKEX']['get_timestamp'];
+    let headers = null;
+    let param = null;
+    return await getResponseDefault(url, headers, param, proxy);
 }
 
 async function get_BTC_USD_SWAP_INDEX_OKEX() {
     let url = config['OKEX']['api_url'] + config['OKEX']['get_index'];
-    let timestamp = new Date().getTime().toString();
+    let headers = await getOkexHeadersToken(config['OKEX']['get_index']);
+    let param = null;
+    console.log(proxy);
+    return await getResponseDefault(url, headers, param, proxy);
+}
+
+async function get_BTC_USD_SWAP_POSITION_OKEX() {
+    let url = config['OKEX']['api_url'] + config['OKEX']['get_position'];
+    let headers = await getOkexHeadersToken(config['OKEX']['get_position']);
+    let param = null;
+    return getResponseDefault(url, headers, param, proxy);
+}
+
+async function getResponseDefault(url, headers, param, proxy) {
     return new Promise((resolve, reject) => {
         axios.get(url, {
-            headers: {
-                'OK-ACCESS-KEY': config['OKEX']['OK-ACCESS-KEY'],
-                'OK-ACCESS-SIGN': CryptoJS.enc.Base64.stringify(
-                    CryptoJS.HmacSHA256(timestamp + 'GET' + config['OKEX']['get_index'], config['OKEX']['SECRET-KEY'])),
-                'OK-ACCESS-TIMESTAMP': timestamp,
-                'OK-ACCESS-PASSPHRASE': config['OKEX']['OK-ACCESS-PASSPHRASE']
-            }
+            params: param,
+            headers: headers,
+            // httpAgent: new HttpProxyAgent("http://" + ip + ":" + port),
+            // httpsAgent: new HttpProxyAgent("http://" + ip + ":" + port)
+            proxy: proxy
         })
             .then(function (response) {
                 console.log(response.data);
@@ -55,32 +87,13 @@ async function get_BTC_USD_SWAP_INDEX_OKEX() {
                 // always executed
             });
     });
-}
-
-async function getResponseDefault(url, param) {
-    axios.get(url, {
-        params: param,
-        // httpAgent: new HttpProxyAgent("http://" + ip + ":" + port),
-        // httpsAgent: new HttpProxyAgent("http://" + ip + ":" + port)
-        // proxy: {
-        //     host: ip,
-        //     port: port
-        // }
-    })
-        .then(function (response) {
-            console.log(response.data);
-            return response.data;
-        })
-        .catch(function (error) {
-            console.log(error);
-        })
-        .then(function () {
-            // always executed
-        });
 }
 
 module.exports = {
     getResponseBTC,
     get_BTC_USD_SWAP_INDEX_OKEX,
+    get_BTC_USD_SWAP_POSITION_OKEX,
     getResponseDefault
 };
+
+get_BTC_USD_SWAP_POSITION_OKEX();
