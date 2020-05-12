@@ -5,10 +5,11 @@ const Crypto = require("crypto");
 let iniParser = require('iniparser');
 let config = iniParser.parseSync('./resource/config.ini');
 
-let proxy = {
+let proxy = null;
+/*let proxy = {
     host: config['PROXY']['ip'],
     port: config['PROXY']['port']
-};
+};*/
 axios.defaults.timeout = 10000; //超时取消请求
 
 async function getOkexHeadersToken(api_url) {
