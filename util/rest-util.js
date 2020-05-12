@@ -5,11 +5,10 @@ const Crypto = require("crypto");
 let iniParser = require('iniparser');
 let config = iniParser.parseSync('./resource/config.ini');
 
-let proxy = null;
-/*let proxy = {
+let proxy = {
     host: config['PROXY']['ip'],
     port: config['PROXY']['port']
-};*/
+};
 axios.defaults.timeout = 10000; //超时取消请求
 
 async function getOkexHeadersToken(api_url) {
@@ -74,7 +73,7 @@ async function getResponseDefault(url, headers, param, proxy) {
             headers: headers,
             // httpAgent: new HttpProxyAgent("http://" + ip + ":" + port),
             // httpsAgent: new HttpProxyAgent("http://" + ip + ":" + port)
-            proxy: proxy
+            // proxy: proxy
         })
             .then(function (response) {
                 console.log(response.data);
