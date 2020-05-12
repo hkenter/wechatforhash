@@ -55,7 +55,6 @@ async function get_BTC_USD_SWAP_INDEX_OKEX() {
     let url = config['OKEX']['api_url'] + config['OKEX']['get_index'];
     let headers = await getOkexHeadersToken(config['OKEX']['get_index']);
     let param = null;
-    console.log(proxy);
     return await getResponseDefault(url, headers, param, proxy);
 }
 
