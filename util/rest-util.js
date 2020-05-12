@@ -96,4 +96,3 @@ module.exports = {
     getResponseDefault
 };
 
-get_BTC_USD_SWAP_POSITION_OKEX();
