@@ -99,7 +99,7 @@ async function getResponseDefault(url, headers, param, proxy) {
             headers: headers,
             // httpAgent: new HttpProxyAgent("http://" + ip + ":" + port),
             // httpsAgent: new HttpProxyAgent("http://" + ip + ":" + port)
-            proxy: proxy
+            // proxy: proxy
         })
             .then(function (response) {
                 console.log(response.data);
@@ -123,7 +123,7 @@ async function postResponseDefault(url, headers, param, proxy) {
             url: url,
             data: param,
             headers: headers,
-            proxy: proxy
+            // proxy: proxy
         })
             .then(function (response) {
             console.log(response.data);
