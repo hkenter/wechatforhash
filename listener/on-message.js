@@ -117,7 +117,7 @@ async function onMessage(msg) {
                 for (const holding of json_btc_usd_swap_position['holding']) {
                     if (holding['side'] === side && holding['position'] === '0') {
                         let json_btc_usd_swap_order = await RestUtil.set_SWAP_ORDER_OKEX(
-                            10, EnumUtil.order_type.default, type, limit_position, EnumUtil.instrument_id.BTC_USD_SWAP);
+                            1, EnumUtil.order_type.Market, type, null, EnumUtil.instrument_id.BTC_USD_SWAP);
                         await msg.say(`${side} 本单已开\r\n单号：${json_btc_usd_swap_order['order_id']}`, contact);
                     }
                 }

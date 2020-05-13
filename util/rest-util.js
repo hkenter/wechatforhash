@@ -70,13 +70,24 @@ async function get_BTC_USD_SWAP_POSITION_OKEX() {
 
 async function set_SWAP_ORDER_OKEX(size, order_type, type, price, instrument_id) {
     let url = config['OKEX']['api_url'] + config['OKEX']['set_swap_order'];
-    let param = {
-        "size": size,
-        "order_type": order_type,
-        "type": type,
-        "price": price,
-        "instrument_id": instrument_id
-    };
+    let param = null;
+    if (price !== null) {
+        param = {
+            "size": size,
+            "order_type": order_type,
+            "type": type,
+            "price": price,
+            "instrument_id": instrument_id
+        };
+    } else {
+        param = {
+            "size": size,
+            "order_type": order_type,
+            "type": type,
+            "instrument_id": instrument_id
+        };
+    }
+
     let headers = await getOkexHeadersToken('POST', config['OKEX']['set_swap_order'], param);
     return postResponseDefault(url, headers, param, proxy);
 }
