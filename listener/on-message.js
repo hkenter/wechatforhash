@@ -1,5 +1,6 @@
 let bot = require('./../demo');
-let RestUtil = require('./../util/rest-util');
+const RestUtil = require('./../util/rest-util');
+const EnumUtil = require('./../util/enum-util');
 
 let busyIndicator    = false
 let busyAnnouncement = `Automatic Reply: I can't read your message because I'm offline now. I'll reply you when I come back.`
@@ -83,6 +84,8 @@ async function onMessage(msg) {
             let limit_position = null;
             let stop_profit_position = null;
             let stop_loss_position = null;
+            let side = null;
+            let type = null;
             // get okex-btc-usd-swap index
             let json_btc_usd_swap_index = await RestUtil.get_BTC_USD_SWAP_INDEX_OKEX();
             console.log(`okex永续BTC指数：${json_btc_usd_swap_index['index']}`);
@@ -100,11 +103,24 @@ async function onMessage(msg) {
                 if (line.indexOf('止损点位') >= 0) {
                     stop_loss_position = line.split('：')[1];
                 }
+                if (line.indexOf('做多') >= 0) {
+                    side = 'long';
+                    type = EnumUtil.type.OPEN_LONG;
+                } else if (line.indexOf('做空') >= 0) {
+                    side = 'short';
+                    type = EnumUtil.type.OPEN_SHORT;
+                }
             });
             if (json_btc_usd_swap_index['index'] - limit_position >= 50) {
                 console.log('此单可做');
                 let json_btc_usd_swap_position = await RestUtil.get_BTC_USD_SWAP_POSITION_OKEX();
-                console.log(json_btc_usd_swap_position);
+                for (const holding of json_btc_usd_swap_position['holding']) {
+                    if (holding['side'] === side && holding['position'] === '0') {
+                        let json_btc_usd_swap_order = await RestUtil.set_SWAP_ORDER_OKEX(
+                            10, EnumUtil.order_type.default, type, limit_position, EnumUtil.instrument_id.BTC_USD_SWAP);
+                        await msg.say(`${side} 本单已开\r\n单号：${json_btc_usd_swap_order['order_id']}`, contact);
+                    }
+                }
             } else {
                 console.log('此单不可做');
             }
