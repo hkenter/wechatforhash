@@ -1,9 +1,16 @@
 let bot = require('./../demo');
+const DBUtil = require('./../util/db-util');
 const RestUtil = require('./../util/rest-util');
 const EnumUtil = require('./../util/enum-util');
 
 let busyIndicator    = false
 let busyAnnouncement = `Automatic Reply: I can't read your message because I'm offline now. I'll reply you when I come back.`
+let worker_chain = null;
+
+async function init() {
+    let rows = await DBUtil.execSql('select supported_algorithm_names,group_concat(model) as worker_chain from WORK_INFO group by supported_algorithm_names', null);
+    worker_chain = rows[0][0]['worker_chain'];
+}
 
 // Message
 async function onMessage(msg) {
@@ -152,5 +159,7 @@ async function onMessage(msg) {
     }
 
 }
+
+init().then(r => null);
 
 module.exports = onMessage;
