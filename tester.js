@@ -1,4 +1,9 @@
-let str = 's17 pro';
+const DelayQueueExecutor = require('rx-queue').DelayQueueExecutor;
 
-str = str.replace(/\s/ig,'');
-console.log(str);
+
+const delay = new DelayQueueExecutor(500);  // set delay period time to 500 milliseconds
+// delay.subscribe(console.log);
+
+delay.execute(() => console.log(1))
+delay.execute(() => console.log(2))
+delay.execute(() => console.log(3))

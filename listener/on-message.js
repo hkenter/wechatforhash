@@ -1,8 +1,11 @@
 let bot = require('./../demo');
+const DelayQueueExecutor = require('rx-queue').DelayQueueExecutor;
 const DBUtil = require('./../util/db-util');
 const RestUtil = require('./../util/rest-util');
 const EnumUtil = require('./../util/enum-util');
 
+const delay = new DelayQueueExecutor(2000);
+delay.subscribe(console.log);
 let busyIndicator    = false;
 let busyAnnouncement = `Automatic Reply: I can't read your message because I'm offline now. I'll reply you when I come back.`;
 let worker_map = new Map();
@@ -83,17 +86,17 @@ async function onMessage(msg) {
             return
         }
         if (await msg.mentionSelf()) {
-            if (content.indexOf('btc') >= 0 && content.indexOf('所有人') < 0) {
-                // get btc price
-                let json_btc_price = await RestUtil.getResponseBTC();
-                await msg.say(`BTC当前报价:\r\nUSD:${json_btc_price['BTC']['USD']}\r\nCNY:${json_btc_price['BTC']['CNY']}`, contact);
-                return
-            }
             return
         }
         if (content === 'wechaty') {
             say_someting = 'welcome to wechaty!';
             await contact.say(say_someting);
+            return
+        }
+        if (content.indexOf('btc') >= 0 && content.indexOf('所有人') < 0) {
+            // get btc price
+            let json_btc_price = await RestUtil.getResponseBTC();
+            await delay.execute(() => msg.say(`BTC当前报价:\r\nUSD:${json_btc_price['BTC']['USD']}\r\nCNY:${json_btc_price['BTC']['CNY']}`, contact));
             return
         }
         if (worker_map.has(content.replace(/\s/ig,'').toLocaleUpperCase())) {
@@ -109,7 +112,7 @@ async function onMessage(msg) {
                     + compute_powers_obj['SHA256']['compute_power'] + ' ' + compute_powers_obj['SHA256']['unit']
                     + '\r\n功耗比：' + Math.round(row['power']/(compute_powers_obj['SHA256']['compute_power_num']/1000000000000)) + 'W/T\r\n\r\n'
             });
-            await msg.say(worker_info, contact);
+            await delay.execute(() => msg.say(worker_info, contact));
             console.log(rows);
             return
         }
@@ -170,10 +173,10 @@ async function onMessage(msg) {
         const contactList = await msg.mentionList();
         const contactIdList = contactList.map(c => c.id);
         if (contactIdList.includes(this.userSelf().id)) {
-            await msg.say(busyAnnouncement, contact);
+            await delay.execute(() => msg.say(busyAnnouncement, contact));
         }
     } else if(room === null) {
-        await msg.say(busyAnnouncement);
+        await delay.execute(() => msg.say(busyAnnouncement));
         return
     }
 
