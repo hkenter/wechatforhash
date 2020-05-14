@@ -12,7 +12,16 @@ let worker_map = new Map();
 
 async function init() {
     let rows = await DBUtil.execSql('select supported_algorithm_names,group_concat(model) as worker_chain from WORK_INFO group by supported_algorithm_names', null);
-    let worker_split = rows[0][0]['worker_chain'].split(',');
+    let worker_split = [];
+    for (let row of rows[0]) {
+        let worker_chain = await row['worker_chain'].split(',');
+        await console.log('worker_chain:' + worker_chain);
+        await Array.prototype.push.apply(worker_split, worker_chain);
+        // await worker_split.concat(worker_chain);
+    }
+    console.log("worker_split" + worker_split);
+
+    // let worker_split = rows[0][0]['worker_chain'].split(',');
     for (let i=0;i < worker_split.length;i++) {
         if (worker_split[i].indexOf('/') > 0) {
             worker_split[i] = worker_split[i].split('/')[0].replace(/\s/ig,''); // 去除字符串内所有的空格
@@ -73,16 +82,16 @@ async function onMessage(msg) {
             say_someting = '撤回事件激活：\r\n' + recalledMessage;
             let me = await bot.Contact.find({name:'王某人'});
             if (room === null) {
-                me.say(say_someting);
+                await me.say(say_someting);
             } else {
                 // room.sync();
                 // let room = bot.Room.load('xxxx@chatroom');
                 // let topic = await room.topic();
                 // room.say(say_someting);
                 console.log('recalled for me');
-                me.say(say_someting);
+                await me.say(say_someting);
             }
-            console.log(`Message: ${recalledMessage} has been recalled.`)
+            console.log(`Message: ${recalledMessage} has been recalled.`);
             return
         }
         if (await msg.mentionSelf()) {
@@ -173,10 +182,10 @@ async function onMessage(msg) {
         const contactList = await msg.mentionList();
         const contactIdList = contactList.map(c => c.id);
         if (contactIdList.includes(this.userSelf().id)) {
-            await delay.execute(() => msg.say(busyAnnouncement, contact));
+            await delay.execute(() => delay.execute(() => msg.say(busyAnnouncement, contact)));
         }
     } else if(room === null) {
-        await delay.execute(() => msg.say(busyAnnouncement));
+        await delay.execute(() => delay.execute(() => msg.say(busyAnnouncement)));
         return
     }
 
