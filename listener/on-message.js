@@ -95,6 +95,7 @@ async function onMessage(msg) {
             return
         }
         if (worker_map.has(content.replace(/\s/ig,'').toLocaleUpperCase())) {
+            console.log('has true! ' + content.replace(/\s/ig,'').toLocaleUpperCase());
             let rows = await DBUtil.execSql('SELECT model,power,brand,brand_en,compute_powers FROM WORK_INFO WHERE model = ?', [content.toLocaleUpperCase()]);
             if (rows[0].length === 0) {
                 rows = await DBUtil.execSql('SELECT model,power,brand,brand_en,compute_powers FROM WORK_INFO WHERE model LIKE ?', [content.toLocaleUpperCase() + '%']);
