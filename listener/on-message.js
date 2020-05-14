@@ -24,7 +24,11 @@ async function init() {
         } else {
             worker_split[i] = worker_split[i].replace(/\s/ig,'');
         }
-        worker_map.set(worker_split[i].toLocaleUpperCase(), parseArray(rows[0][0]['supported_algorithm_names'])[0]);
+        for (let row of rows[0]) {
+            if (worker_split[i].indexOf(row['worker_chain']) >= 0) {
+                worker_map.set(worker_split[i].toLocaleUpperCase(), parseArray(row['supported_algorithm_names'])[0]);
+            }
+        }
     }
     console.log(worker_map);
 }
@@ -113,8 +117,6 @@ async function onMessage(msg) {
             let worker_info = '';
             rows[0].forEach(function (row) {
                 let compute_powers_obj = JSON.parse(row['compute_powers']);
-                console.log(compute_powers_obj);
-                console.log(content.replace(/\s/ig,'').toLocaleUpperCase());
                 worker_info += row['brand'] + row['model'] + '\r\n功耗：' + row['power'] + 'W   '
                     + compute_powers_obj[worker_map[content.replace(/\s/ig,'').toLocaleUpperCase()]]['compute_power'] + ' ' + compute_powers_obj[worker_map[content.replace(/\s/ig,'').toLocaleUpperCase()]]['unit']
                     + '\r\n功耗比：' + Math.round(row['power']/(compute_powers_obj[worker_map[content.replace(/\s/ig,'').toLocaleUpperCase()]]['compute_power_num']/1000000000000)) + 'W/T\r\n\r\n'
