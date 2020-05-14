@@ -20,21 +20,16 @@ async function init() {
 
     for (let i=0;i < worker_split.length;i++) {
         if (worker_split[i].indexOf('/') > 0) {
-            for (let row of rows[0]) {
-                if (worker_split[i].indexOf(row['worker_chain']) >= 0) {
-                    worker_split[i] = worker_split[i].split('/')[0].replace(/\s/ig,''); // 去除字符串内所有的空格
-                    worker_map.set(worker_split[i].toLocaleUpperCase(), parseArray(row['supported_algorithm_names'])[0]);
-                }
-            }
+            worker_split[i] = worker_split[i].split('/')[0].replace(/\s/ig,''); // 去除字符串内所有的空格
         } else {
-            for (let row of rows[0]) {
-                if (worker_split[i].indexOf(row['worker_chain']) >= 0) {
-                    worker_split[i] = worker_split[i].replace(/\s/ig,'');
-                    worker_map.set(worker_split[i].toLocaleUpperCase(), parseArray(row['supported_algorithm_names'])[0]);
-                }
+            worker_split[i] = worker_split[i].replace(/\s/ig,'');
+        }
+        for (let row of rows[0]) {
+            console.log(row['worker_chain']);
+            if (worker_split[i].indexOf(row['worker_chain']) >= 0) {
+                worker_map.set(worker_split[i].toLocaleUpperCase(), parseArray(row['supported_algorithm_names'])[0]);
             }
         }
-
     }
     console.log(worker_map);
 }
