@@ -24,7 +24,7 @@ async function init() {
         } else {
             worker_split[i] = worker_split[i].replace(/\s/ig,'');
         }
-        worker_map.set(worker_split[i].toLocaleUpperCase(), rows[0][0]['supported_algorithm_names']);
+        worker_map.set(worker_split[i].toLocaleUpperCase(), parseArray(rows[0][0]['supported_algorithm_names'][0]));
     }
     console.log(worker_map);
 }
@@ -197,3 +197,21 @@ async function onMessage(msg) {
 init().then(r => null);
 
 module.exports = onMessage;
+
+/***
+ * convert string to Array object
+ * right input:var jsonStr='[1,2, 3,"whuang"]';
+ * wrong input:var jsonStr='[1,2, 3,whuang]';
+ * @param arrStr
+ */
+function parseArray(arrStr) {
+    let tempKey = 'arr23' + new Date().getTime(); //arr231432350056527
+    let arrayJsonStr = '{"' + tempKey + '":' + arrStr + '}';
+    let arrayJson;
+    if (JSON && JSON.parse) {
+        arrayJson = JSON.parse(arrayJsonStr);
+    } else {
+        arrayJson = eval('(' + arrayJsonStr + ')');
+    }
+    return arrayJson[tempKey];
+}
