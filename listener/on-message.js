@@ -4,7 +4,7 @@ const DBUtil = require('./../util/db-util');
 const RestUtil = require('./../util/rest-util');
 const EnumUtil = require('./../util/enum-util');
 
-const delay = new DelayQueueExecutor(10 * 1000);
+const delay = new DelayQueueExecutor(5 * 1000);
 delay.subscribe(console.log);
 let busyIndicator    = false;
 let busyAnnouncement = `Automatic Reply: I can't read your message because I'm offline now. I'll reply you when I come back.`;
