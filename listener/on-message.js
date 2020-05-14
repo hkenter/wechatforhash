@@ -24,7 +24,7 @@ async function init() {
         } else {
             worker_split[i] = worker_split[i].replace(/\s/ig,'');
         }
-        worker_map.set(worker_split[i].toLocaleUpperCase(), parseArray(rows[0][0]['supported_algorithm_names'][0]));
+        worker_map.set(worker_split[i].toLocaleUpperCase(), parseArray(rows[0][0]['supported_algorithm_names'])[0]);
     }
     console.log(worker_map);
 }
