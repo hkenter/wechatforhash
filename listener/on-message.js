@@ -3,8 +3,8 @@ const DBUtil = require('./../util/db-util');
 const RestUtil = require('./../util/rest-util');
 const EnumUtil = require('./../util/enum-util');
 
-let busyIndicator    = false
-let busyAnnouncement = `Automatic Reply: I can't read your message because I'm offline now. I'll reply you when I come back.`
+let busyIndicator    = false;
+let busyAnnouncement = `Automatic Reply: I can't read your message because I'm offline now. I'll reply you when I come back.`;
 let worker_map = new Map();
 
 async function init() {
@@ -94,7 +94,7 @@ async function onMessage(msg) {
             await contact.say(say_someting);
             return
         }
-        if (worker_map.has(content.toLocaleUpperCase())) {
+        if (worker_map.has(content.replace(/\s/ig,'').toLocaleUpperCase())) {
             let rows = await DBUtil.execSql('SELECT model,power,brand,brand_en,compute_powers FROM WORK_INFO WHERE model = ?', [content.toLocaleUpperCase()]);
             if (rows[0].length === 0) {
                 rows = await DBUtil.execSql('SELECT model,power,brand,brand_en,compute_powers FROM WORK_INFO WHERE model LIKE ?', [content.toLocaleUpperCase() + '%']);
