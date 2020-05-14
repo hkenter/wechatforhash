@@ -100,7 +100,7 @@ async function onMessage(msg) {
             console.log('has true! ' + content.replace(/\s/ig,'').toLocaleUpperCase());
             let rows = await DBUtil.execSql('SELECT model,power,brand,brand_en,compute_powers FROM WORK_INFO WHERE model = ?', [content.toLocaleUpperCase()]);
             if (rows[0].length === 0) {
-                rows = await DBUtil.execSql('SELECT model,power,brand,brand_en,compute_powers FROM WORK_INFO WHERE model LIKE ?', [content.toLocaleUpperCase() + '%']);
+                rows = await DBUtil.execSql('SELECT model,power,brand,brand_en,compute_powers FROM WORK_INFO WHERE replace(model,\' \',\'\') LIKE ?', [content.toLocaleUpperCase() + '%']);
             }
             let worker_info = '';
             rows[0].forEach(function (row) {
