@@ -93,7 +93,7 @@ async function onMessage(msg) {
             await contact.say(say_someting);
             return
         }
-        if (content.indexOf('btc') >= 0 && content.indexOf('所有人') < 0) {
+        if (content.toLocaleUpperCase() === ('BTC') >= 0 && content.indexOf('所有人') < 0) {
             // get btc price
             let json_btc_price = await RestUtil.getResponseBTC();
             await delay.execute(() => msg.say(`BTC当前报价:\r\nUSD:${json_btc_price['BTC']['USD']}\r\nCNY:${json_btc_price['BTC']['CNY']}`, contact));
