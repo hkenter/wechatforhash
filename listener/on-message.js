@@ -5,11 +5,18 @@ const EnumUtil = require('./../util/enum-util');
 
 let busyIndicator    = false
 let busyAnnouncement = `Automatic Reply: I can't read your message because I'm offline now. I'll reply you when I come back.`
-let worker_chain = null;
+let worker_map = new Map();
 
 async function init() {
     let rows = await DBUtil.execSql('select supported_algorithm_names,group_concat(model) as worker_chain from WORK_INFO group by supported_algorithm_names', null);
-    worker_chain = rows[0][0]['worker_chain'];
+    let worker_split = rows[0][0]['worker_chain'].split(',');
+    for (let i=0;i < worker_split.length;i++) {
+        if (worker_split[i].indexOf('/') > 0) {
+            worker_split[i] = worker_split[i].split('/')[0].replace(/\s*/g,""); // 去除字符串内所有的空格
+        }
+        worker_map.set(worker_split[i], rows[0][0]['supported_algorithm_names']);
+    }
+    console.log(worker_map);
 }
 
 // Message
@@ -85,6 +92,22 @@ async function onMessage(msg) {
         if (content === 'wechaty') {
             say_someting = 'welcome to wechaty!';
             await contact.say(say_someting);
+            return
+        }
+        if (worker_map.has(content.toLocaleUpperCase())) {
+            let rows = await DBUtil.execSql('SELECT model,power,brand,brand_en,compute_powers FROM WORK_INFO WHERE model = ?', [content.toLocaleUpperCase()]);
+            if (rows[0].length === 0) {
+                rows = await DBUtil.execSql('SELECT model,power,brand,brand_en,compute_powers FROM WORK_INFO WHERE model LIKE ?', [content.toLocaleUpperCase() + '%']);
+            }
+            let worker_info = '';
+            rows[0].forEach(function (row) {
+                let compute_powers_obj = JSON.parse(row['compute_powers']);
+                worker_info += row['brand'] + row['model'] + '\r\n功耗：' + row['power'] + 'W   '
+                    + compute_powers_obj['SHA256']['compute_power'] + ' ' + compute_powers_obj['SHA256']['unit']
+                    + '\r\n功耗比：' + Math.round(row['power']/(compute_powers_obj['SHA256']['compute_power_num']/1000000000000)) + 'W/T\r\n\r\n'
+            });
+            await msg.say(worker_info, contact);
+            console.log(rows);
             return
         }
         if (content.indexOf('BTC合约交易机会出现') >= 0) {
