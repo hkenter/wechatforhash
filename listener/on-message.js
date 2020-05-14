@@ -20,7 +20,7 @@ async function init() {
 
     for (let i=0;i < worker_split.length;i++) {
         for (let row of rows[0]) {
-            let RegExg = RegExp('/' + worker_split[i] + '/');
+            let RegExg = RegExp(worker_split[i]);
             if (RegExg.test(row['worker_chain'])) {
                 if (worker_split[i].indexOf('/') > 0) {
                     worker_split[i] = await worker_split[i].split('/')[0].replace(/\s/ig,''); // 去除字符串内所有的空格
