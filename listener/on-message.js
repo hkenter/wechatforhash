@@ -13,6 +13,8 @@ async function init() {
     for (let i=0;i < worker_split.length;i++) {
         if (worker_split[i].indexOf('/') > 0) {
             worker_split[i] = worker_split[i].split('/')[0].replace(/\s/ig,''); // 去除字符串内所有的空格
+        } else {
+            worker_split[i] = worker_split[i].replace(/\s/ig,'');
         }
         worker_map.set(worker_split[i].toLocaleUpperCase(), rows[0][0]['supported_algorithm_names']);
     }
