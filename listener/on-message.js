@@ -109,7 +109,8 @@ async function onMessage(msg) {
             return
         }
         if (worker_map.has(content.replace(/\s/ig,'').toLocaleUpperCase())) {
-            console.log('has true! ' + content.replace(/\s/ig,'').toLocaleUpperCase());
+            let worker_name_cleaned = await content.replace(/\s/ig,'').toLocaleUpperCase();
+            console.log('has true! ' + worker_name_cleaned);
             let rows = await DBUtil.execSql('SELECT model,power,brand,brand_en,compute_powers FROM WORK_INFO WHERE model = ?', [content.toLocaleUpperCase()]);
             if (rows[0].length === 0) {
                 rows = await DBUtil.execSql('SELECT model,power,brand,brand_en,compute_powers FROM WORK_INFO WHERE replace(model,\' \',\'\') LIKE ?', [content.toLocaleUpperCase() + '%']);
@@ -117,9 +118,9 @@ async function onMessage(msg) {
             let worker_info = '';
             rows[0].forEach(function (row) {
                 let compute_powers_obj = JSON.parse(row['compute_powers']);
-                console.log(worker_map[content.replace(/\s/ig,'').toLocaleUpperCase()]);
+                console.log(worker_map[worker_name_cleaned]);
                 worker_info += row['brand'] + row['model'] + '\r\n功耗：' + row['power'] + 'W   '
-                    + compute_powers_obj[worker_map[content.replace(/\s/ig,'').toLocaleUpperCase()]]['compute_power'] + ' ' + compute_powers_obj[worker_map[content.replace(/\s/ig,'').toLocaleUpperCase()]]['unit']
+                    + compute_powers_obj[worker_map[worker_name_cleaned]]['compute_power'] + ' ' + compute_powers_obj[worker_map[worker_name_cleaned]]['unit']
                     + '\r\n功耗比：' + Math.round(row['power']/(compute_powers_obj[worker_map[content.replace(/\s/ig,'').toLocaleUpperCase()]]['compute_power_num']/1000000000000)) + 'W/T\r\n\r\n'
             });
             await delay.execute(() => msg.say(worker_info, contact));
