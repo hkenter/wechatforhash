@@ -23,4 +23,4 @@ const delay = new DelayQueueExecutor(500);  // set delay period time to 500 mill
 // }
 
 let str = 'X7';
-console.log(RegExp(/X7/).test('D3,A5,A5+,A7,D5,X7,U6'));
+console.log('D3,A5,A5+,A7,D5,X7,U6'.indexOf(str));
