@@ -115,12 +115,12 @@ async function onMessage(msg) {
                 rows = await DBUtil.execSql('SELECT model,power,brand,brand_en,compute_powers FROM WORK_INFO WHERE replace(model,\' \',\'\') LIKE ?', [content.toLocaleUpperCase() + '%']);
             }
             let worker_info = '';
-            rows[0].forEach(function (row) {
+            for (const row of rows[0]) {
                 let compute_powers_obj = JSON.parse(row['compute_powers']);
                 worker_info += row['brand'] + row['model'] + '\r\n功耗：' + row['power'] + 'W   '
-                    + compute_powers_obj[worker_map[content.replace(/\s/ig,'').toLocaleUpperCase()]]['compute_power'] + ' ' + compute_powers_obj[worker_map[content.replace(/\s/ig,'').toLocaleUpperCase()]]['unit']
-                    + '\r\n功耗比：' + Math.round(row['power']/(compute_powers_obj[worker_map[content.replace(/\s/ig,'').toLocaleUpperCase()]]['compute_power_num']/1000000000000)) + 'W/T\r\n\r\n'
-            });
+                    + compute_powers_obj[await worker_map[content.replace(/\s/ig,'').toLocaleUpperCase()]]['compute_power'] + ' ' + await compute_powers_obj[worker_map[content.replace(/\s/ig,'').toLocaleUpperCase()]]['unit']
+                    + '\r\n功耗比：' + await Math.round(row['power']/(await compute_powers_obj[worker_map[content.replace(/\s/ig,'').toLocaleUpperCase()]]['compute_power_num']/1000000000000)) + 'W/T\r\n\r\n'
+            }
             await delay.execute(() => msg.say(worker_info, contact));
             console.log(rows);
             return
