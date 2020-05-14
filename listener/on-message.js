@@ -205,6 +205,7 @@ module.exports = onMessage;
  * @param arrStr
  */
 function parseArray(arrStr) {
+    console.log(arrStr);
     let tempKey = 'arr23' + new Date().getTime(); //arr231432350056527
     let arrayJsonStr = '{"' + tempKey + '":' + arrStr + '}';
     let arrayJson;
