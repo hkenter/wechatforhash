@@ -20,9 +20,9 @@ async function init() {
 
     for (let i=0;i < worker_split.length;i++) {
         for (let row of rows[0]) {
-            console.log('**********' + worker_split[i]);
-            console.log('&&&&&&&&&&' + row['worker_chain']);
             if (worker_split[i].indexOf(row['worker_chain']) >= 0) {
+                console.log('**********' + worker_split[i]);
+                console.log('&&&&&&&&&&' + row['worker_chain']);
                 if (worker_split[i].indexOf('/') > 0) {
                     worker_split[i] = await worker_split[i].split('/')[0].replace(/\s/ig,''); // 去除字符串内所有的空格
                 } else {
