@@ -4,9 +4,9 @@ const DelayQueueExecutor = require('rx-queue').DelayQueueExecutor;
 const delay = new DelayQueueExecutor(500);  // set delay period time to 500 milliseconds
 // delay.subscribe(console.log);
 
-delay.execute(() => console.log(1))
-delay.execute(() => console.log(2))
-delay.execute(() => console.log(3))
+// delay.execute(() => console.log(1))
+// delay.execute(() => console.log(2))
+// delay.execute(() => console.log(3))
 //
 // console.log(parseArray('["Ealgesong"]'));
 //
@@ -21,3 +21,6 @@ delay.execute(() => console.log(3))
 //     }
 //     return arrayJson[tempKey];
 // }
+
+let str = 'X7';
+console.log(RegExp(/X7/).test('D3,A5,A5+,A7,D5,X7,U6'));
