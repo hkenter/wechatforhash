@@ -15,13 +15,9 @@ async function init() {
     let worker_split = [];
     for (let row of rows[0]) {
         let worker_chain = await row['worker_chain'].split(',');
-        await console.log('worker_chain:' + worker_chain);
         await Array.prototype.push.apply(worker_split, worker_chain);
-        // await worker_split.concat(worker_chain);
     }
-    console.log("worker_split" + worker_split);
 
-    // let worker_split = rows[0][0]['worker_chain'].split(',');
     for (let i=0;i < worker_split.length;i++) {
         if (worker_split[i].indexOf('/') > 0) {
             worker_split[i] = worker_split[i].split('/')[0].replace(/\s/ig,''); // 去除字符串内所有的空格
