@@ -14,7 +14,7 @@ async function init() {
         if (worker_split[i].indexOf('/') > 0) {
             worker_split[i] = worker_split[i].split('/')[0].replace(/\s*/g,""); // 去除字符串内所有的空格
         }
-        worker_map.set(worker_split[i], rows[0][0]['supported_algorithm_names']);
+        worker_map.set(worker_split[i].toLocaleUpperCase(), rows[0][0]['supported_algorithm_names']);
     }
     console.log(worker_map);
 }
