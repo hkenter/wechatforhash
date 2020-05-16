@@ -1,10 +1,12 @@
 ---
 title: wechatforhash-加密货币矿业微信助手
-[![Powered by Wechaty](https://img.shields.io/badge/Powered%20By-Wechaty-green.svg)](https://github.com/chatie/wechaty)
-[![Wechaty开源激励计划](https://img.shields.io/badge/Wechaty-开源激励计划-green.svg)](https://github.com/juzibot/Welcome/wiki/Everything-about-Wechaty)
 date: 2020-05-15 18:00 +0800
 author: Kelly Cheng
 ---
+
+[![Powered by Wechaty](https://img.shields.io/badge/Powered%20By-Wechaty-green.svg)](https://github.com/chatie/wechaty)
+[![Wechaty开源激励计划](https://img.shields.io/badge/Wechaty-开源激励计划-green.svg)](https://github.com/juzibot/Welcome/wiki/Everything-about-Wechaty)
+
 > Author: [@hkenter](https://github.com/hkenter) 加密货币矿工
 <!--more-->
 ## 背景
