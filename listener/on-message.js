@@ -97,17 +97,23 @@ async function onMessage(msg) {
         if (await msg.mentionSelf()) {
             return
         }
-        if (content === 'wechaty') {
-            say_someting = 'welcome to wechaty!';
-            await contact.say(say_someting);
-            return
-        }
+        // BTC实时报价
         if (content.toLocaleUpperCase() === ('BTC') && content.indexOf('所有人') < 0) {
             // get btc price
             let json_btc_price = await RestUtil.getResponseBTC();
             await delay.execute(() => msg.say(`BTC当前报价:\r\nUSD:${json_btc_price['BTC']['USD']}\r\nCNY:${json_btc_price['BTC']['CNY']}`, contact));
             return
         }
+        if (content.length === 64) {
+            let tx_info = await RestUtil.getResponseTX(encodeURI(content));
+            if (tx_info['err_no'] === 0) {
+                await delay.execute(() => msg.say(`交易金额：${tx_info['data']['outputs_value']/100000000} BTC\r\n区块高度：${tx_info['data']['block_height']}\r\n确认数：${tx_info['data']['confirmations']}`));
+            }
+            return
+        }
+        // 交易查询
+
+        // 矿机查询
         if (worker_map.has(content.replace(/\s/ig,'').toLocaleUpperCase())) {
             let worker_name_cleaned = await content.replace(/\s/ig,'').toLocaleUpperCase();
             console.log('has true! ' + worker_name_cleaned);
@@ -126,6 +132,7 @@ async function onMessage(msg) {
             console.log(rows);
             return
         }
+        // 自定义下单
         if (content.indexOf('BTC合约交易机会出现') >= 0) {
             let limit_position = null;
             let stop_profit_position = null;

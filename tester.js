@@ -1,26 +1,6 @@
-const DelayQueueExecutor = require('rx-queue').DelayQueueExecutor;
+function check(str) {
+    let reg=/^[0-9a-fA-F][^IOQU]$/;
+    return reg.test(str);
+}
 
-
-const delay = new DelayQueueExecutor(500);  // set delay period time to 500 milliseconds
-// delay.subscribe(console.log);
-
-// delay.execute(() => console.log(1))
-// delay.execute(() => console.log(2))
-// delay.execute(() => console.log(3))
-//
-// console.log(parseArray('["Ealgesong"]'));
-//
-// function parseArray(arrStr) {
-//     let tempKey = 'arr23' + new Date().getTime(); //arr231432350056527
-//     let arrayJsonStr = '{"' + tempKey + '":' + arrStr + '}';
-//     let arrayJson;
-//     if (JSON && JSON.parse) {
-//         arrayJson = JSON.parse(arrayJsonStr);
-//     } else {
-//         arrayJson = eval('(' + arrayJsonStr + ')');
-//     }
-//     return arrayJson[tempKey];
-// }
-
-let str = 'X7';
-console.log('D3,A5,A5+,A7,D5,X7,U6'.indexOf(str));
+console.log(check('0eab89a271380b09987bcee5258fca91f28df4dadcedf892658b9bc261050d96'))

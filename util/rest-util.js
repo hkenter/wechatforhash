@@ -47,6 +47,31 @@ async function getResponseBTC() {
     return await getResponseDefault(url, headers, params, proxy);
 }
 
+async function getResponseTX(tx_id) {
+    let url = `https://chain.api.btc.com/v3/tx/${tx_id}?verbose=3`;
+    let params= null;
+    let headers = {
+        'Content-Type': 'application/json'
+    };
+    return await getResponseDefault(url, headers, params, proxy);
+}
+
+async function getResponsePoolTop(top) {
+    let url = `https://btc.com/stats/api/realtime/poolHashrate?count=${top}`;
+    let params= null;
+    let headers = {
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Content-Encoding': 'gzip',
+        'Accept-Language': 'zh-CN,zh;q=0.9',
+        'Host': 'btc.com',
+        'Referer': url,
+        'Upgrade-Insecure-Requests': 1,
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'
+    };
+    return await getResponseDefault(url, headers, params, proxy);
+}
+
 async function get_TIMESTAMP_OKEX() {
     let url = config['OKEX']['api_url'] + config['OKEX']['get_timestamp'];
     let headers = null;
@@ -159,9 +184,14 @@ async function postResponseDefault(url, headers, param, proxy) {
 
 module.exports = {
     getResponseBTC,
+    getResponseTX,
     get_BTC_USD_SWAP_INDEX_OKEX,
     get_BTC_USD_SWAP_POSITION_OKEX,
     set_SWAP_ORDER_OKEX,
     getResponseDefault,
     postResponseDefault
 };
+
+// getResponsePoolTop(15).then(function f(pool_info) {
+//     console.log(pool_info['data'])
+// })
