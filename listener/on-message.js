@@ -1,5 +1,7 @@
 let bot = require('./../demo');
 const DelayQueueExecutor = require('rx-queue').DelayQueueExecutor;
+const PuppeteerUtil = require('./../util/puppeteer-util');
+const { FileBox } = require('file-box');
 const DBUtil = require('./../util/db-util');
 const RestUtil = require('./../util/rest-util');
 const EnumUtil = require('./../util/enum-util');
@@ -104,6 +106,7 @@ async function onMessage(msg) {
             await delay.execute(() => msg.say(`BTC当前报价:\r\nUSD:${json_btc_price['BTC']['USD']}\r\nCNY:${json_btc_price['BTC']['CNY']}`, contact));
             return
         }
+        // 交易查询
         if (content.length === 64) {
             let tx_info = await RestUtil.getResponseTX(encodeURI(content));
             if (tx_info['err_no'] === 0) {
@@ -111,8 +114,6 @@ async function onMessage(msg) {
             }
             return
         }
-        // 交易查询
-
         // 矿机查询
         if (worker_map.has(content.replace(/\s/ig,'').toLocaleUpperCase())) {
             let worker_name_cleaned = await content.replace(/\s/ig,'').toLocaleUpperCase();
@@ -130,6 +131,15 @@ async function onMessage(msg) {
             });
             await delay.execute(() => msg.say(worker_info, contact));
             console.log(rows);
+            return
+        }
+        // 股票overview
+        if (content.length === 6 &&
+            (content.indexOf('600') || content.indexOf('601') || content.indexOf('603'))) {
+            console.log('into overview: ' + content);
+            await PuppeteerUtil.getViewScreenshot('overview', content);
+            let pic_file = FileBox.fromFile(`./files/pic/overview_${content}.png`);
+            await msg.say(pic_file, contact);
             return
         }
         // 自定义下单

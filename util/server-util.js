@@ -3,7 +3,7 @@ const swig = require('swig');
 
 app = express();
 //设置渲染文件的目录
-app.set('views','/views');
+app.set('views','./views');
 //设置html模板渲染引擎
 app.engine('html',swig.renderFile);
 //设置渲染引擎为html
@@ -16,7 +16,7 @@ app.get('/overview',function(request,response){
     //调用渲染模板
     response.render('overview',{
         //传参
-        code:'600208'
+        ticker: request.query.ticker
     });
 
 });

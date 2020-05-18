@@ -3,3 +3,4 @@ node_modules
 resource/config.ini
 package-lock.json
 bot-data-for-hash.memory-card.json
+file/pic/*
