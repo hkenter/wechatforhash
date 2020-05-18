@@ -6,7 +6,7 @@ async function getViewScreenshot(func, ticker) {
         headless: true,
         // defaultViewport: {width: 1440, height: 780},
         ignoreHTTPSErrors: false, //忽略 https 报错
-        args: ['--start-fullscreen'] //全屏打开页面
+        args: ['--no-sandbox'] // linux root 必填
     });
     const page = await browser.newPage();
     // await page.goto('http://' + 'localhost:9527' + '/' + func + `?ticker=${ticker}`);
