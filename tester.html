@@ -2,13 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <script src="https://widgets.coingecko.com/coingecko-coin-heatmap-widget.js"></script>
-
+    <title>{{ code }}</title>
 </head>
 <body>
-<div>
-    <coingecko-coin-heatmap-widget  width="600" height="400" locale="zh"></coingecko-coin-heatmap-widget>
+<!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+    <div id="tradingview_4704a"></div>
+    <div class="tradingview-widget-copyright"><a href="https://cn.tradingview.com/symbols/SSE-600208/" rel="noopener" target="_blank"><span class="blue-text">{{ code }}报价</span></a>由TradingView提供</div>
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    <script type="text/javascript">
+        new TradingView.MediumWidget(
+            {
+                "symbols": [
+                    [
+                        "SSE:{{ code }}|1d"
+                    ]
+                ],
+                "chartOnly": false,
+                "width": 1000,
+                "height": 400,
+                "locale": "zh_CN",
+                "colorTheme": "light",
+                "gridLineColor": "#F0F3FA",
+                "trendLineColor": "#2196F3",
+                "fontColor": "#787B86",
+                "underLineColor": "#E3F2FD",
+                "isTransparent": false,
+                "autosize": false,
+                "container_id": "tradingview_4704a"
+            }
+        );
+    </script>
 </div>
+<!-- TradingView Widget END -->
 </body>
 </html>
