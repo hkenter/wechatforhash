@@ -12,9 +12,23 @@ async function getViewScreenshot(func, ticker) {
     // await page.goto('http://' + 'localhost:9527' + '/' + func + `?ticker=${ticker}`);
     await page.goto(`https://s.tradingview.com/mediumwidgetembed/?symbols=SSE%3A${ticker}%7C1d&locale=zh_CN&trendLineColor=%232196F3&underLineColor=%23E3F2FD&fontColor=%23787B86&gridLineColor=%23F0F3FA&width=1000px&height=calc(400px%20-%2032px)&colorTheme=light&utm_source=localhost&utm_medium=widget_new&utm_campaign=symbol-overview`);
     await page.waitForSelector('.option-39ZFf678', { timeout: 300000 });
+    await sleep(3000);
 
     await page.screenshot({path: `./files/pic/${func}_${ticker}.png`});
     await browser.close();
+}
+
+//延时函数
+function sleep(delay) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            try {
+                resolve(1)
+            } catch (e) {
+                reject(0)
+            }
+        }, delay)
+    })
 }
 
 module.exports = {
