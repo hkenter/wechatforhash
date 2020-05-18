@@ -139,7 +139,7 @@ async function onMessage(msg) {
             console.log('into overview: ' + content);
             await PuppeteerUtil.getViewScreenshot('overview', content);
             let pic_file = FileBox.fromFile(`./files/pic/overview_${content}.png`);
-            await msg.say(pic_file, contact);
+            await delay.execute(() => msg.say(pic_file, contact));
             return
         }
         // 自定义下单
