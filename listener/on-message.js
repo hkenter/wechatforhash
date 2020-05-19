@@ -79,19 +79,18 @@ async function onMessage(msg) {
             console.log(msg.type() + ': '+ topic + '^^^^^^' + content);
         }
         if (msg.type() === bot.Message.Type.Recalled) {
-            console.log('RecalledEvent!');
             const recalledMessage = await msg.toRecalled();
             say_someting = '撤回事件激活：\r\n' + recalledMessage;
-            let me = await bot.Contact.find({name:'王某人'});
+            console.log(contact.id);
+            let me = await bot.Contact.load('xihuanzuoaime');
             if (room === null) {
-                await me.say(say_someting);
+                await delay.execute(() => contact.say(say_someting, me));
             } else {
                 // room.sync();
                 // let room = bot.Room.load('xxxx@chatroom');
                 // let topic = await room.topic();
                 // room.say(say_someting);
-                console.log('recalled for me');
-                await me.say(say_someting);
+                await delay.execute(() => contact.say(say_someting, me));
             }
             console.log(`Message: ${recalledMessage} has been recalled.`);
             return
