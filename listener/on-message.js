@@ -138,8 +138,11 @@ async function onMessage(msg) {
             (content.startsWith('600') || content.startsWith('601')
                 || content.startsWith('603') || content.startsWith('688'))) {
             console.log('into overview: ' + content);
-            await PuppeteerUtil.getViewScreenshot('overview', content);
+            await PuppeteerUtil.getOverviewScreenshot(content);
             let pic_file = FileBox.fromFile(`./files/pic/overview_${content}.png`);
+            await delay.execute(() => msg.say(pic_file, contact));
+            await PuppeteerUtil.getTechAnalysisScreenshot(content);
+            pic_file = FileBox.fromFile(`./files/pic/TechAnalysis_${content}.png`);
             await delay.execute(() => msg.say(pic_file, contact));
             return
         }
