@@ -27,10 +27,11 @@ async function getTechAnalysisScreenshot(ticker) {
 function getBrowser() {
     return puppeteer.launch({
         // slowMo: 100,    //放慢速度
-        headless: true,
+        headless: false,
         // defaultViewport: {width: 1440, height: 780},
         ignoreHTTPSErrors: false, //忽略 https 报错
-        args: ['--no-sandbox', '--disable-setuid-sandbox', 'lang=zh_CN.UTF-8'] // linux root 必填
+        lang: 'zh_CN.UTF-8',
+        args: ['--no-sandbox', '--disable-setuid-sandbox'] // linux root 必填
     });
 }
 
@@ -52,4 +53,4 @@ module.exports = {
     getTechAnalysisScreenshot
 };
 
-getOverviewScreenshot('overview', '600208 ');
+// getOverviewScreenshot('overview', '600208 ');
