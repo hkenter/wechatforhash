@@ -31,7 +31,7 @@ function getBrowser() {
         // defaultViewport: {width: 1440, height: 780},
         ignoreHTTPSErrors: false, //忽略 https 报错
         lang: 'zh_CN.UTF-8',
-        args: ['--no-sandbox', '--disable-setuid-sandbox'] // linux root 必填
+        args: ['--no-sandbox'] // linux root 必填
     });
 }
 
