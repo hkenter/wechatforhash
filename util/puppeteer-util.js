@@ -30,7 +30,7 @@ function getBrowser() {
         headless: false,
         // defaultViewport: {width: 1440, height: 780},
         ignoreHTTPSErrors: false, //忽略 https 报错
-        args: ['--no-sandbox', '--disable-gpu'] // linux root 必填
+        args: ['--no-sandbox', 'lang=zh_CN.UTF-8', '--disable-gpu'] // linux root 必填
     });
 }
 
