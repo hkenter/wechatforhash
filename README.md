@@ -39,14 +39,57 @@ author: Kelly Cheng
 ### 开发与生产环境 ###
 生产环境基于centos 7.5，数据库mysql8.0.x。
 
-> Tips：1.centos7.5安装wechaty需进行gcc相关组件的手动升级，比较繁琐，可自行百度。
-> 2.puppeteer centos7 依赖
->#依赖库
->yum install pango.x86_64 libXcomposite.x86_64 libXcursor.x86_64 libXdamage.x86_64 libXext.x86_64 libXi.x86_64 libXtst.x86_64 cups-libs.x86_64 libXScrnSaver.x86_64 libXrandr.x86_64 GConf2.x86_64 alsa-lib.x86_64 atk.x86_64 gtk3.x86_64 -y
->#字体
->yum install ipa-gothic-fonts xorg-x11-fonts-100dpi xorg-x11-fonts-75dpi xorg-x11-utils xorg-x11-fonts-cyrillic xorg-x11-fonts-Type1 xorg-x11-fonts-misc -y
+> Tips：
 
+1.centos7.5安装wechaty需进行gcc相关组件的手动升级，比较繁琐，可自行百度。
 
+2.puppeteer centos7 依赖
+
+依赖库
+
+yum install pango.x86_64 libXcomposite.x86_64 libXcursor.x86_64 libXdamage.x86_64 libXext.x86_64 libXi.x86_64 libXtst.x86_64 cups-libs.x86_64 libXScrnSaver.x86_64 libXrandr.x86_64 GConf2.x86_64 alsa-lib.x86_64 atk.x86_64 gtk3.x86_64 -y
+
+字体
+
+yum install ipa-gothic-fonts xorg-x11-fonts-100dpi xorg-x11-fonts-75dpi xorg-x11-utils xorg-x11-fonts-cyrillic xorg-x11-fonts-Type1 xorg-x11-fonts-misc -y
+
+3.puppeteer截图乱码
+
+3.1安装fontconfig
+yum -y install fontconfig
+这个命令执行完成之后，就可以在/usr/share文件夹里面看到fonts和fontconfig
+
+3.2添加中文字体库
+从window的C:\Windows\Fonts里面把你需要的字体拷贝出来。比如simfang.ttf
+
+在CentOS的/usr/share/fonts新建一个叫chinese的文件夹
+然后把刚刚拷贝字体放到CentOS的/usr/share/fonts/chinese里面
+
+修改chinese目录的权限：
+chmod -R 775 /usr/share/fonts/chinese
+
+接下来需要安装ttmkfdir来搜索目录中所有的字体信息，并汇总生成fonts.scale文件，输入命令
+
+yum -y install ttmkfdir
+
+ttmkfdir -e /usr/share/X11/fonts/encodings/encodings.dir
+
+修改字体配置文件 vi /etc/fonts/fonts.conf
+
+<!-- Font directory list -->
+
+        <dir>/usr/share/fonts</dir>
+        <dir>/usr/share/X11/fonts/Type1</dir>
+        <dir>/usr/share/X11/fonts/TTF</dir>
+        <dir>/usr/local/share/fonts</dir>
+        <dir>/usr/local/share/fonts/chinese</dir>
+        <dir prefix="xdg">fonts</dir>
+        <!-- the following element will be removed in the future -->
+        <dir>~/.fonts</dir>
+
+刷新内存中的字体缓存，fc-cache
+
+看一下现在机器上已经有了刚才添加的字体。fc-list :lang=zh
  
 ## 结尾
 wechatforhash 依然是一个正在开发中的项目, 欢迎留言交流你对它的看法
