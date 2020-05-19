@@ -135,7 +135,8 @@ async function onMessage(msg) {
         }
         // 股票overview
         if (content.length === 6 &&
-            (content.startsWith('600') || content.startsWith('601') || content.startsWith('603'))) {
+            (content.startsWith('600') || content.startsWith('601')
+                || content.startsWith('603') || content.startsWith('688'))) {
             console.log('into overview: ' + content);
             await PuppeteerUtil.getViewScreenshot('overview', content);
             let pic_file = FileBox.fromFile(`./files/pic/overview_${content}.png`);
