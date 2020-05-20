@@ -1,5 +1,5 @@
 let bot = require('./../demo');
-const UrlLink = require('wechaty');
+const { UrlLink } = require('wechaty');
 const DelayQueueExecutor = require('rx-queue').DelayQueueExecutor;
 const PuppeteerUtil = require('./../util/puppeteer-util');
 const { FileBox } = require('file-box');
