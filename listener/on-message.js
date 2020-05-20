@@ -98,6 +98,13 @@ async function onMessage(msg) {
         if (await msg.mentionSelf()) {
             return
         }
+        // AI机器人模式
+        if(content.startsWith('~') && content.length > 1) {
+            content = content.substr(1);
+            let reply_json = RestUtil.getResponseRobot(content, contact.id);
+            console.log(reply_json);
+            return
+        }
         // BTC实时报价
         if (content.toLocaleUpperCase() === ('BTC') && content.indexOf('所有人') < 0) {
             // get btc price

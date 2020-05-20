@@ -196,6 +196,7 @@ async function postResponseDefault(url, headers, param, proxy) {
 }
 
 module.exports = {
+    getResponseRobot,
     getResponseBTC,
     getResponseTX,
     get_BTC_USD_SWAP_INDEX_OKEX,
