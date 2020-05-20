@@ -1,4 +1,5 @@
 let bot = require('./../demo');
+const UrlLink = require('wechaty');
 const DelayQueueExecutor = require('rx-queue').DelayQueueExecutor;
 const PuppeteerUtil = require('./../util/puppeteer-util');
 const { FileBox } = require('file-box');
@@ -103,7 +104,26 @@ async function onMessage(msg) {
             content = content.substr(1);
             let reply_obj = await RestUtil.getResponseRobot(content, contact.id);
             if (reply_obj['code'] === 0 && reply_obj['msg'] === 'ok') {
-                await delay.execute(() => msg.say(reply_obj['result']['intents'][0]['result']['text'], contact));
+                let service = reply_obj['result']['intents'][0]['parameters']['service'];
+                if (service === 'music') {
+                    let response = reply_obj['result']['intents'][0]['result']['response'];
+                    if (response['code'] === 0 && response['msg'] === '成功') {
+                        let muisc_info = response['result']['music_list'][0];
+                        if (muisc_info['xiami'].length > 0) {
+                            const link = new UrlLink({
+                                description : `一首${muisc_info['name']}送给你，Dear ${contact.name()}`,
+                                title       : muisc_info['name'],
+                                url         : `https://m.xiami.com/song/${muisc_info['xiami']}?from=web_share_wechat`,
+                                thumbnailUrl: muisc_info['image'],
+                            });
+                            await delay.execute(() => msg.say(link, contact));
+                        } else {
+                            return
+                        }
+                    }
+                } else if (service === 'chat_common') {
+                    await delay.execute(() => msg.say(reply_obj['result']['intents'][0]['result']['text'], contact));
+                }
             }
             return
         }
