@@ -108,15 +108,14 @@ async function onMessage(msg) {
                 if (service === 'music') {
                     let response = reply_obj['result']['intents'][0]['result']['response'];
                     if (response['code'] === 0 && response['msg'] === '成功') {
-                        let muisc_info = response['result']['music_list'][0];
-                        if (muisc_info['xiami'].length > 0) {
+                        let music_info = response['result']['music_list'][0];
+                        if (music_info['music163'].length > 0) {
                             const link = new UrlLink({
-                                description : `一首${muisc_info['name']}送给你，Dear ${contact.name()}`,
-                                title       : muisc_info['name'],
-                                url         : `https://m.xiami.com/song/${muisc_info['xiami']}?from=web_share_wechat`,
-                                thumbnailUrl: muisc_info['image'],
+                                description : `一首${music_info['name']}送给你，Dear ${contact.name()}`,
+                                title       : music_info['name'],
+                                url         : `https://y.music.163.com/m/song?id=${music_info['music163']}&from=message`,
+                                thumbnailUrl: music_info['image'],
                             });
-                            await delay.execute(() => msg.say(`https://m.xiami.com/song/${muisc_info['xiami']}?from=web_share_wechat`, contact));
                             await delay.execute(() => msg.say(link, contact));
                         } else {
                             return
