@@ -102,7 +102,9 @@ async function onMessage(msg) {
         if(content.startsWith('~') && content.length > 1) {
             content = content.substr(1);
             let reply_json = RestUtil.getResponseRobot(content, contact.id);
-            console.log(reply_json);
+            if (reply_json['code'] === 0 && reply_json['msg'] === 'ok') {
+                await delay.execute(() => msg.say(reply_json['result']['intents'][0]['result']['text'], contact));
+            }
             return
         }
         // BTC实时报价

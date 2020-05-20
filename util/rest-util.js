@@ -14,7 +14,7 @@ axios.defaults.timeout = 10000; //超时取消请求
 async function getResponseRobot(q, user_id) {
     let url = `http://api.ruyi.ai/ruyi-api/v1/message`;
     let params= {
-        api_key: config['ROBOT']['api_key'],
+        app_key: config['ROBOT']['app_key'],
         user_id: user_id,
         q: q
     };
@@ -207,3 +207,5 @@ module.exports = {
 // getResponsePoolTop(15).then(function f(pool_info) {
 //     console.log(pool_info['data'])
 // })
+
+// getResponseRobot('哈哈','tester');
