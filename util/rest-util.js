@@ -12,15 +12,13 @@ let proxy = {
 axios.defaults.timeout = 10000; //超时取消请求
 
 async function getResponseRobot(q, user_id) {
-    let url = `https://api.ruyi.ai/ruyi-api/v1/message`;
+    let url = `http://api.ruyi.ai/ruyi-api/v1/message`;
     let params= {
         api_key: config['ROBOT']['api_key'],
         user_id: user_id,
         q: q
     };
-    let headers = {
-        'Content-Type': 'application/json'
-    };
+    let headers = null;
     return await getResponseDefault(url, headers, params, proxy);
 }
 
