@@ -103,6 +103,7 @@ async function onMessage(msg) {
             content = content.substr(1);
             let reply_json = RestUtil.getResponseRobot(content, contact.id);
             if (reply_json['code'] === 0 && reply_json['msg'] === 'ok') {
+                console.log(reply_json['result']['intents'][0]);
                 await delay.execute(() => msg.say(reply_json['result']['intents'][0]['result']['text'], contact));
             }
             return
