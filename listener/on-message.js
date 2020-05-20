@@ -116,6 +116,7 @@ async function onMessage(msg) {
                                 url         : `https://m.xiami.com/song/${muisc_info['xiami']}?from=web_share_wechat`,
                                 thumbnailUrl: muisc_info['image'],
                             });
+                            await delay.execute(() => msg.say(`https://m.xiami.com/song/${muisc_info['xiami']}?from=web_share_wechat`, contact));
                             await delay.execute(() => msg.say(link, contact));
                         } else {
                             return
