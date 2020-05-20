@@ -84,13 +84,13 @@ async function onMessage(msg) {
             console.log(contact.id);
             let me = await bot.Contact.load('xihuanzuoaime');
             if (room === null) {
-                await delay.execute(() => contact.say(say_someting, me));
+                await delay.execute(() => me.say(say_someting));
             } else {
                 // room.sync();
                 // let room = bot.Room.load('xxxx@chatroom');
                 // let topic = await room.topic();
                 // room.say(say_someting);
-                await delay.execute(() => contact.say(say_someting, me));
+                await delay.execute(() => me.say(say_someting));
             }
             console.log(`Message: ${recalledMessage} has been recalled.`);
             return
