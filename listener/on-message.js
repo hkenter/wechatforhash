@@ -123,6 +123,8 @@ async function onMessage(msg) {
                     }
                 } else if (service === 'chat_common') {
                     await delay.execute(() => msg.say(reply_obj['result']['intents'][0]['result']['text'], contact));
+                } else if (service === 'calculator') {
+                    await delay.execute(() => msg.say(reply_obj['result']['intents'][0]['result']['text'], contact));
                 }
             }
             return
