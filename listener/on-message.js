@@ -74,10 +74,10 @@ async function onMessage(msg) {
 
         // 撤回处理
         if (room === null) {
-            console.log(msg.type() + ': '+ content);
+            console.log(msg.type() + `: ${contact.name}: ${content}`);
         } else {
             let topic = await room.topic();
-            console.log(msg.type() + ': '+ topic + '^^^^^^' + content);
+            console.log(msg.type() + `: ${topic}: ${contact.name}: ${content}`);
         }
         if (msg.type() === bot.Message.Type.Recalled) {
             const recalledMessage = await msg.toRecalled();
