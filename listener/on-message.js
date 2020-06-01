@@ -157,7 +157,7 @@ async function onMessage(msg) {
                 let compute_powers_obj = JSON.parse(row['compute_powers']);
                 worker_info += row['brand'] + row['model'] + '\r\n功耗：' + row['power'] + 'W   '
                     + compute_powers_obj[worker_map.get(worker_name_cleaned)]['compute_power'] + ' ' + compute_powers_obj[worker_map.get(worker_name_cleaned)]['unit']
-                    + '\r\n功耗比：' + Math.round(row['power']/(compute_powers_obj[worker_map.get(worker_name_cleaned)]['compute_power_num']/1000000000000)) + 'W/T\r\n\r\n'
+                    + '\r\n功耗比：' + (row['power']/(compute_powers_obj[worker_map.get(worker_name_cleaned)]['compute_power_num']/1000000000000)).toFixed(1) + 'W/T\r\n\r\n'
             });
             await delay.execute(() => msg.say(worker_info, contact));
             console.log(rows);
