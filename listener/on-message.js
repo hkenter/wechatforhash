@@ -102,7 +102,7 @@ async function onMessage(msg) {
         if(room !== null && content.startsWith('随机抽取') && (content.length === 6)) {
             let members = ['Li Ming', 'Tian laoshi', 'Sun Yi', 'Yu Xinjia', 'Jiang Wen', 'Chen Dong', 'Liu Luyang',
                 'Sun Yanjie', 'Pan Hang', 'Zhang Yunlong', 'Lao Qin', 'Hao Lv'];
-            await getRandomArrayElements(members, content.slice(4, 5)).forEach(function f(value, index) {
+            getRandomArrayElements(members, content.slice(4, 5)).forEach(function f(value, index) {
                 delay.execute(() => msg.say(`随机抽取人No.${index}：${value}`, contact));
             });
         }
@@ -280,7 +280,7 @@ function parseArray(arrStr) {
     return arrayJson[tempKey];
 }
 
-async function getRandomArrayElements(arr, count) {
+function getRandomArrayElements(arr, count) {
     let shuffled = arr.slice(0), i = arr.length, min = i - count, temp, index;
     while (i-- > min) {
         index = Math.floor((i + 1) * Math.random());

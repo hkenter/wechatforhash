@@ -11,5 +11,7 @@ function getRandomArrayElements(arr, count) {
 
 let members = ['Li Ming', 'Tian laoshi', 'Sun Yi', 'Yu Xinjia', 'Jiang Wen', 'Chen Dong', 'Liu Luyang',
     'Sun Yanjie', 'Pan Hang', 'Zhang Yunlong', 'Lao Qin', 'Hao Lv'];
-console.log(getRandomArrayElements(members, 2));
+console.log(getRandomArrayElements(members, 2).forEach(function f(value, index) {
+      console.log(value)
+}));
 console.log('随机抽取2人'.length);
