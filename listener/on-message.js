@@ -100,7 +100,7 @@ async function onMessage(msg) {
             return
         }
         if(room !== null && content.startsWith('随机抽取') && (content.length === 6)) {
-            let members = ['Li Ming', 'Tian laoshi', 'Sun Yi', 'Yu Xinjia', 'Jiang Wen', 'Chen Dong', 'Liu Luyang',
+            let members = ['Li Ming', 'Tian laoshi', 'Sun Yi', 'Chen Dong', 'Liu Luyang',
                 'Sun Yanjie', 'Pan Hang', 'Zhang Yunlong', 'Lao Qin', 'Hao Lv'];
             getRandomArrayElements(members, content.slice(4, 5)).forEach(function f(value, index) {
                 delay.execute(() => msg.say(`随机抽取人No.${index + 1}：${value}`, contact));

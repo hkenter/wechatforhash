@@ -9,7 +9,7 @@ function getRandomArrayElements(arr, count) {
     return shuffled.slice(min);
 }
 
-let members = ['Li Ming', 'Tian laoshi', 'Sun Yi', 'Yu Xinjia', 'Jiang Wen', 'Chen Dong', 'Liu Luyang',
+let members = ['Li Ming', 'Tian laoshi', 'Sun Yi', 'Chen Dong', 'Liu Luyang',
     'Sun Yanjie', 'Pan Hang', 'Zhang Yunlong', 'Lao Qin', 'Hao Lv'];
 console.log(getRandomArrayElements(members, 2).forEach(function f(value, index) {
       console.log(value)
