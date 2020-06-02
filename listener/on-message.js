@@ -103,7 +103,7 @@ async function onMessage(msg) {
             let members = ['Li Ming', 'Tian laoshi', 'Sun Yi', 'Yu Xinjia', 'Jiang Wen', 'Chen Dong', 'Liu Luyang',
                 'Sun Yanjie', 'Pan Hang', 'Zhang Yunlong', 'Lao Qin', 'Hao Lv'];
             getRandomArrayElements(members, content.slice(4, 5)).forEach(function f(value, index) {
-                delay.execute(() => msg.say(`随机抽取人No.${index}：${value}`, contact));
+                delay.execute(() => msg.say(`随机抽取人No.${index + 1}：${value}`, contact));
             });
         }
         // AI机器人模式
