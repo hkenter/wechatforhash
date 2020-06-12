@@ -107,7 +107,7 @@ async function onMessage(msg) {
             });
         }
         // AI机器人模式
-        if((room === null && content.startsWith('~') || content.startsWith('～')) && content.length > 1) {
+        if((content.startsWith('~') || content.startsWith('～')) && content.length > 1) {
             content = content.substr(1);
             let reply_obj = await RestUtil.getResponseRobot(content, contact.id);
             if (reply_obj['code'] === 0 && reply_obj['msg'] === 'ok') {
