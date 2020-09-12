@@ -128,6 +128,16 @@ async function set_SWAP_ORDER_OKEX(size, order_type, type, price, instrument_id)
     return postResponseDefault(url, headers, param, proxy);
 }
 
+async function getNews() {
+    let url = `https://cryptopanic.com/api/v1/posts/`;
+    let params= {
+        auth_token: '488d67796206e46df5702ee99310e7fba846a4e3',
+        kind: 'news'
+    };
+    let headers = null;
+    return await getResponseDefault(url, headers, params, proxy);
+}
+
 async function getResponseDefault(url, headers, param, proxy) {
     return new Promise((resolve, reject) => {
         axios.get(url, {
@@ -138,7 +148,7 @@ async function getResponseDefault(url, headers, param, proxy) {
             // proxy: proxy
         })
             .then(function (response) {
-                console.log(response.data);
+                // console.log(response.data);
                 resolve(response.data);
             })
             .catch(function (error) {
@@ -162,7 +172,7 @@ async function postResponseDefault(url, headers, param, proxy) {
             // proxy: proxy
         })
             .then(function (response) {
-            console.log(response.data);
+            // console.log(response.data);
             resolve(response.data);
             })
             .catch(function (error) {
@@ -200,6 +210,7 @@ module.exports = {
     get_BTC_USD_SWAP_INDEX_OKEX,
     get_BTC_USD_SWAP_POSITION_OKEX,
     set_SWAP_ORDER_OKEX,
+    getNews,
     getResponseDefault,
     postResponseDefault
 };
@@ -209,3 +220,5 @@ module.exports = {
 // })
 
 // getResponseRobot('哈哈','tester');
+
+// getNews()
