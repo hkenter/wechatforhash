@@ -34,7 +34,7 @@ async function onLogin (user) {
             if (value) {
                 translate(key, {to: 'zh-CN'}).then(res => {
                     console.log(res.text);
-                    delay.execute(() => dt_room.say(res.text));
+                    delay.execute(() => dt_room.say(key + "\r\n" + res.text));
                 }).catch(err => {
                     console.error(err);
                 });
