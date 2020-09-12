@@ -11,7 +11,7 @@ async function onLogin (user) {
     console.log(`${user}登录了`);
 
     //每分钟的第8秒定时执行一次:
-    const dt_room = await bot.Room.find({topic: '嘎嘎嘎'}); //嘎嘎嘎\数字部落★提升群
+    const dt_room = await bot.Room.find({topic: '数字部落★提升群'}); //嘎嘎嘎\数字部落★提升群
     let json_basic_news = await RestUtil.getNews();
     await schedule.scheduleJob('8 * * * * *',async ()=>{
         await console.log('scheduleCronstyle:' + new Date());
