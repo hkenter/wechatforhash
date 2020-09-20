@@ -138,6 +138,13 @@ async function getNews() {
     return await getResponseDefault(url, headers, params, proxy);
 }
 
+async function getTokenTerminalTops() {
+    let url = `https://devapi.tokenterminal.com/latest_metrics`;
+    let param = null;
+    let headers = null;
+    return await getResponseDefault(url, headers, params, proxy);
+}
+
 async function getResponseDefault(url, headers, param, proxy) {
     return new Promise((resolve, reject) => {
         axios.get(url, {
@@ -211,6 +218,7 @@ module.exports = {
     get_BTC_USD_SWAP_POSITION_OKEX,
     set_SWAP_ORDER_OKEX,
     getNews,
+    getTokenTerminalTops,
     getResponseDefault,
     postResponseDefault
 };
