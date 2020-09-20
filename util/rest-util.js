@@ -140,7 +140,7 @@ async function getNews() {
 
 async function getTokenTerminalTops() {
     let url = `https://devapi.tokenterminal.com/latest_metrics`;
-    let param = null;
+    let params = null;
     let headers = null;
     return await getResponseDefault(url, headers, params, proxy);
 }

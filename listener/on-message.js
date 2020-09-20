@@ -136,12 +136,11 @@ async function onMessage(msg) {
             }
             return
         }
-        let json_token_infos = require('./on-login').json_token_infos;
-        let token_infos_map = require('./on-login').token_infos_map;
+        let token_infos_map = global.token_infos_map;
+        console.log(token_infos_map);
         if (token_infos_map.has(content.toLocaleLowerCase())) {
             let token_info = token_infos_map.get(content.toLocaleLowerCase());
-            await delay.execute(() => msg.say(`${content.toLocaleLowerCase()}最新报价: $:${token_info['latest_price']}\r\n
-                                                    24小时涨跌:${Number(token_info['price_24h_change']*100).toFixed(2)}`, contact));
+            await delay.execute(() => msg.say(`${content.toLocaleLowerCase()}最新报价: $${token_info['latest_price']}\r\n24小时涨跌: ${Number(token_info['price_24h_change']*100).toFixed(2)}%\r\n24小时年化收益: ${Number(token_info['revenue_24h_change']*100).toFixed(2)}%\r\n7天年化收益: ${Number(token_info['revenue_7d_change'] * 100).toFixed(2)}%\r\n30天年化收益: ${Number(token_info['revenue_30d_change'] * 100).toFixed(2)}%`, contact));
         }
         // BTC实时报价
         if (content.toLocaleUpperCase() === ('BTC') && content.indexOf('所有人') < 0) {
