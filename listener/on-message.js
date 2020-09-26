@@ -1,6 +1,7 @@
 let bot = require('./../demo');
 const { UrlLink } = require('wechaty');
 const DelayQueueExecutor = require('rx-queue').DelayQueueExecutor;
+const Json2csvParser = require('json2csv').Parser;
 const PuppeteerUtil = require('./../util/puppeteer-util');
 const { FileBox } = require('file-box');
 const DBUtil = require('./../util/db-util');
@@ -141,6 +142,23 @@ async function onMessage(msg) {
         if (token_infos_map.has(content.toLocaleLowerCase())) {
             let token_info = token_infos_map.get(content.toLocaleLowerCase());
             await delay.execute(() => msg.say(`${content.toLocaleLowerCase()}最新报价: $${token_info['latest_price']}\r\n24小时涨跌: ${Number(token_info['price_24h_change']*100).toFixed(2)}%\r\n24小时年化收益: ${Number(token_info['revenue_24h_change']*100).toFixed(2)}%\r\n7天年化收益: ${Number(token_info['revenue_7d_change'] * 100).toFixed(2)}%\r\n30天年化收益: ${Number(token_info['revenue_30d_change'] * 100).toFixed(2)}%`, contact));
+        }
+        /**
+         * token top 1000
+         */
+        if (content === 'top1000' && (contact.name() === '凌海' || contact.id === 'miuyan0153' || contact.id === 'rujiang53242671' || contact.id === 'xihuanzuoaime')) {
+            let json_top_1000 = await RestUtil.getTopTokens_1000_cmc();
+            let fields = ['id', 'name', 'symbol', 'slug', 'num_market_pairs', 'date_added', 'tags', 'max_supply', 'circulating_supply', 'total_supply', 'platform'
+                , 'cmc_rank', 'last_updated', 'quote'];
+            let json2csvParser = new Json2csvParser({ fields });
+            let csv = await json2csvParser.parse(json_top_1000['data']);
+            let fs = require('fs');
+            fs.writeFile("./files/top1000.csv", csv, function(err) {
+                if(err) {return console.log(err);}
+                console.log("The file was saved!");
+            });
+            let top1000_fileBox = FileBox.fromFile('./files/top1000.csv')
+            await delay.execute(() => msg.say(top1000_fileBox, contact));
         }
         // BTC实时报价
         if (content.toLocaleUpperCase() === ('BTC') && content.indexOf('所有人') < 0) {

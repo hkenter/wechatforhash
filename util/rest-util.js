@@ -145,6 +145,19 @@ async function getTokenTerminalTops() {
     return await getResponseDefault(url, headers, params, proxy);
 }
 
+async function getTopTokens_1000_cmc() {
+    let url = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest`;
+    let params= {
+        sort: 'market_cap_strict',
+        limit: '1000'
+    };
+    let headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36',
+        'X-CMC_PRO_API_KEY': '760510a1-6dc0-4c25-b29e-af48507eff8e'
+    };
+    return await getResponseDefault(url, headers, params, proxy);
+}
+
 async function getResponseDefault(url, headers, param, proxy) {
     return new Promise((resolve, reject) => {
         axios.get(url, {
@@ -219,6 +232,7 @@ module.exports = {
     set_SWAP_ORDER_OKEX,
     getNews,
     getTokenTerminalTops,
+    getTopTokens_1000_cmc,
     getResponseDefault,
     postResponseDefault
 };
@@ -230,3 +244,5 @@ module.exports = {
 // getResponseRobot('哈哈','tester');
 
 // getNews()
+
+// getTopTokens_1000_cmc()
